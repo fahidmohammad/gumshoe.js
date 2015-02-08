@@ -62,11 +62,11 @@
 	Gumshoe.generateUUID = function() {
 		
 		// Assists with UUID creation
-		var seed = function() {
+		function seed() {
 			return (
 				((Math.random() + 1) * 0x10000) | 0
 			).toString(16).substring(1);
-		};
+		}
 		
 		var uuid = 
 			seed() + seed() + "-" +
@@ -127,7 +127,24 @@
 	
 	
 	// fireRequest(endpoint, data, synchronous)
-	// fireEvent(listeners, data)
+	
+	/**
+	 * Fires an event at the provided listeners.
+	 * 
+	 * @param {string} listeners - An array of listener callbacks to call.
+	 * @param {object} data - The data to provide with the callback.
+	 */
+	function fireEvent(listeners, data) {
+		for (var i in listeners) {
+			
+			try {
+				listeners[i](data);
+			} catch (e) {
+				Gumshoe.logWarning("event", "Error calling listener " + listeners[i].toString());
+			}
+			
+		}
+	}
 	
 	// formatTimestamp(date)
 	
