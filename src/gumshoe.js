@@ -28,7 +28,7 @@
 			"client_timestamp": formatTimestamp(new Date())
 		};
 		
-		var ajaxData = Gumshoe.merge(data, defaults);
+		var ajaxData = merge(data, defaults);
 		var endpoint = this.endpoint || Gumshoe.endpoint;
 		
 		if (!endpoint) {
@@ -80,27 +80,6 @@
 		}
 		
 		return uuid;
-	};
-	
-	
-	/**
-	 * Helper function that merges two arrays, overriding any new data.
-	 * 
-	 * @param source {array} - The source array of default data.
-	 * @param data {array} - New data to apply to the source array.
-	 */
-	Gumshoe.merge = new function(source, data) {
-		var key, result = {};
-		
-		for (key in source) {
-			result[key] = source[key];
-		}
-		
-		for (key in data) {
-			result[key] = data[key];
-		}
-		
-		return result;
 	};
 	
 	
@@ -161,6 +140,28 @@
 			}
 		}
 	}
+	
+	
+	/**
+	 * Helper function that merges two arrays, overriding any new data.
+	 * 
+	 * @param source {array} - The source array of default data.
+	 * @param data {array} - New data to apply to the source array.
+	 */
+	function merge(source, data) {
+		var key, result = {};
+		
+		for (key in source) {
+			result[key] = source[key];
+		}
+		
+		for (key in data) {
+			result[key] = data[key];
+		}
+		
+		return result;
+	};
+	
 	
 	// formatTimestamp(date)
 	
