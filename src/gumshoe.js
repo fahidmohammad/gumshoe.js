@@ -75,7 +75,7 @@
 		
 		// Add a timestamp if one has not been set
 		if (!result.client_timestamp) {
-			result.client_timestamp = formatTimestamp(new Date());
+			result.client_timestamp = Gumshoe.formatTimestamp(new Date());
 		}
 		
 		// Ensure the timestamp is a string
@@ -122,7 +122,7 @@
 		var result = false;
 		
 		// Different origin requests
-		if (differentOrigin) {
+		if (isDifferentOrigin) {
 			
 			// Handle IE calls differently (there's no differentiation between synch and async)
 			if (global.XDomainRequest) {
@@ -141,8 +141,8 @@
 		}
 		
 		// Announcements
-		Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(formattedData)));
-		Gumshoe.fireEvent(listeners.record, formattedData);
+		Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(data)));
+		Gumshoe.fireEvent(listeners.record, data);
 		
 		return result;
 	};
