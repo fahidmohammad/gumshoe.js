@@ -239,7 +239,28 @@
 	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.postRaw = function(data, synchronous) {
-		
+		withRetries(2, function(retry) {
+			
+			var xhr = Gumshoe.getXHR();
+			if (!xhr) {
+				return;
+			}
+			
+			xhr.open("POST", Gumshoe.endpoint, !synchronous);
+			xhr.setRequestHeader("Content-Type", "text/plain");
+			
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState != 4) {
+					return;
+				}
+				if (xhr.status != 200) {
+					retry();
+				}
+			}
+			
+			xhr.send(JSON.stringify(data));
+			
+		});
 	};
 	
 	
@@ -324,6 +345,26 @@
 			pad(date.getUTCMinutes()) + ":" +
 			pad(date.getUTCSeconds()) + "." +
 			String((now.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) + "Z";
+	};
+	
+	
+	/**
+	 * Retries calling a function if there is a failure.
+	 * 
+	 * @param {int} retries - The number of retries remaining.
+	 * @param {function} method - The function to attempt.
+	 * 
+	 * @return The result of the method.
+	 */
+    function withRetries(retries, method) {
+		var doRetry = function() {
+			if (retriesLeft > 0) {
+				retriesLeft--;
+				method(doRetry);
+			}
+		};
+		
+		return method(doRetry);
 	};
 	
 }).call(this);
