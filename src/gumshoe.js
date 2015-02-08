@@ -32,11 +32,11 @@
 		var endpoint = this.endpoint || Gumshoe.endpoint;
 		
 		if (!endpoint) {
-			Gumshoe.logError("Gumshoe.record", "No endpoint defined");
+			Gumshoe.logError("record", "No endpoint defined");
 			return;
 		}
 		
-		Gumshoe.logInfo("Gumshoe.record", endpoint + " ==> " + JSON.stringify(ajaxData)));
+		Gumshoe.logInfo(endpoint + " ==> " + JSON.stringify(ajaxData)));
 		
 	    fireRequest(endpoint, ajaxData, false);
 	    fireEvent(this.listeners.record, ajaxData);
@@ -57,9 +57,46 @@
 	// Gumshoe.generateUUID()
 	// Gumshoe.merge(object, object)
 	
-	// Gumshoe.logInfo(string)
-	// Gumshoe.logWarning(string)
-	// Gumshoe.logError(string)
+	
+	/**
+	 * Sends an informative log to the console, if debugging is enabled.
+	 * 
+	 * @param {string} log - The log data to send to the console.
+	 */
+	Gumshoe.logInfo = function(log) {
+		if (Gumshoe.debug) {
+			console.log(log);
+		}
+	};
+	
+	
+	/**
+	 * Sends a warning to the console, if debugging is enabled.
+	 * 
+	 * @param {string} source - The source of the warning.
+	 * @param {string} warning - The warning to log.
+	 */
+	Gumshoe.logWarning = function(source, warning) {
+		if (Gumshoe.debug) {
+			console.group("Gumshoe Warning (%s)", source);
+			console.warn(warning);
+			console.groupEnd();
+		}
+	};
+	
+	
+	/**
+	 * Throws an error from the Gumshoe library, if debugging is enabled.
+	 * 
+	 * @param {string} source - The source of the error.
+	 * @param {string} error - The error string to throw.
+	 */
+	Gumshoe.logError = function(source, error) {
+		if (Gumshoe.debug) {
+			throw "Gumshoe(" + source + ") ERROR: " + error;
+		}
+	};
+	
 	
 	// fireRequest(endpoint, data, synchronous)
 	// fireEvent(listeners, data)
