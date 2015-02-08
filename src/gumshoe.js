@@ -24,6 +24,8 @@
 	 * @param {string} eventName - The name of the event to log.
 	 * @param {object} data - The data to log for the event.
 	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
+	 * 
+	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.record = function(eventName, data, synchronous) {
 		var formattedData = Gumshoe.formatData(data);
@@ -156,6 +158,11 @@
 	
 	/**
 	 * Handles request processing for Gumshoe events cross-browser.
+	 * 
+	 * @param {object} data - The data to log for the event.
+	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
+	 * 
+	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.fireRequest = function(data, synchronous) {
 	    if (data === undefined || (data instanceof Array && data.length === 0)) {
@@ -169,11 +176,83 @@
 	    }
 		
 		// Determine if the endpoint is on another origin
-		// @TODO
+		var isDifferentOrigin;
+		
+		var a = document.createElement('a');
+		a.href = Gumshoe.endpoint;
+		
+		// IE Check
+		if (a.host.length === 0) {
+			isDifferentOrigin = false;
+		} else {
+			isDifferentOrigin = (window.location.protocol + window.location.host !== a.protocol + a.host);
+		}
+		
+		var result = false;
+		
+		// Different origin requests
+		if (differentOrigin) {
+			
+			// Handle IE calls differently (there's no differentiation between synch and async)
+			if (global.XDomainRequest) {
+				result = Gumshoe.postIE(data);
+			}
+			
+			// Otherwise, do a raw post
+			else {
+				result = Gumshoe.postRaw(data, synchronous);
+			}
+		}
+		
+		// Same origin requests
+		else {
+			result = Gumshoe.post(data, syncronous);
+		}
 		
 		// Announcements
 		Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(formattedData)));
 		Gumshoe.fireEvent(listeners.record, formattedData);
+		
+		return result;
+	};
+	
+	
+	/**
+	 * Handles same-domain requests.
+	 * 
+	 * @param {object} data - The data to log for the event.
+	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
+	 * 
+	 * @return {boolean} Whether the call was successful.
+	 */
+	Gumshoe.post = function(data, synchronous) {
+		
+	};
+	
+	
+	/**
+	 * Handles cross-domain requests for all browser except IE.
+	 * 
+	 * @param {object} data - The data to log for the event.
+	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
+	 * 
+	 * @return {boolean} Whether the call was successful.
+	 */
+	Gumshoe.postRaw = function(data, synchronous) {
+		
+	};
+	
+	
+	/**
+	 * Handles cross-domain requests for IE.
+	 * 
+	 * @param {object} data - The data to log for the event.
+	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
+	 * 
+	 * @return {boolean} Whether the call was successful.
+	 */
+	Gumshoe.postIE = function(data, synchronous) {
+		
 	};
 	
 	
