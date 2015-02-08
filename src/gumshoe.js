@@ -57,7 +57,7 @@
 	/**
 	 * Generates and returns a UUID.
 	 * 
-	 * @return {string} the UUID generated
+	 * @return {string} The UUID generated.
 	 */
 	Gumshoe.generateUUID = function() {
 		
@@ -83,7 +83,25 @@
 	};
 	
 	
-	// Gumshoe.merge(object, object)
+	/**
+	 * Helper function that merges two arrays, overriding any new data.
+	 * 
+	 * @param source {array} - The source array of default data.
+	 * @param data {array} - New data to apply to the source array.
+	 */
+	Gumshoe.merge = new function(source, data) {
+		var key, result = {};
+		
+		for (key in source) {
+			result[key] = source[key];
+		}
+		
+		for (key in data) {
+			result[key] = data[key];
+		}
+		
+		return result;
+	};
 	
 	
 	/**
@@ -136,13 +154,11 @@
 	 */
 	function fireEvent(listeners, data) {
 		for (var i in listeners) {
-			
 			try {
 				listeners[i](data);
 			} catch (e) {
 				Gumshoe.logWarning("event", "Error calling listener " + listeners[i].toString());
 			}
-			
 		}
 	}
 	
