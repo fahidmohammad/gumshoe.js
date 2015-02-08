@@ -145,8 +145,10 @@
 	/**
 	 * Helper function that merges two arrays, overriding any new data.
 	 * 
-	 * @param source {array} - The source array of default data.
-	 * @param data {array} - New data to apply to the source array.
+	 * @param {array} source - The source array of default data.
+	 * @param {array} data - New data to apply to the source array.
+	 * 
+	 * @return {array} The combined arrays.
 	 */
 	function merge(source, data) {
 		var key, result = {};
@@ -160,9 +162,37 @@
 		}
 		
 		return result;
-	};
+	}
 	
 	
-	// formatTimestamp(date)
+	/**
+	 * Helper function to format timestamps into ISO String.  Date.toISOString() is inconsistent
+	 * across browsers as to whether it displays milliseconds, so this function forces that
+	 * functionality.
+	 * 
+	 * @param {Date} date - The Date object to format.
+	 * 
+	 * @return {string} The formatted timestamp.
+	 */
+	function formatTimestamp(date) {
+		
+		// See https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/toISOString#Compatibility
+		function pad(number) {
+			var s = String(number);
+			if (s.length === 1) {
+				s = '0' + s;
+			}
+			return s;
+		}
+		
+		return
+			date.getUTCFullYear() + "-" +
+			pad(date.getUTCMonth() + 1) + "-" +
+			pad(date.getUTCDate()) + "T" + 
+			pad(date.getUTCHours()) + ":" + 
+			pad(date.getUTCMinutes()) + ":" +
+			pad(date.getUTCSeconds()) + "." +
+			String((now.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) + "Z";
+	}
 	
 }).call(this);
