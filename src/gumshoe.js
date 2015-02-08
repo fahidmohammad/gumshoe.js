@@ -54,7 +54,35 @@
 	};
 	
 	
-	// Gumshoe.generateUUID()
+	/**
+	 * Generates and returns a UUID.
+	 * 
+	 * @return {string} the UUID generated
+	 */
+	Gumshoe.generateUUID = function() {
+		
+		// Assists with UUID creation
+		var seed = function() {
+			return (
+				((Math.random() + 1) * 0x10000) | 0
+			).toString(16).substring(1);
+		};
+		
+		var uuid = 
+			seed() + seed() + "-" +
+			seed() + "-" +
+			seed() + "-" +
+			seed() + "-" +
+			seed() + seed() + seed();
+		
+		if (Gumshoe.suffix) {
+			uuid += "-" + encodeURI(Gumshoe.suffix);
+		}
+		
+		return uuid;
+	};
+	
+	
 	// Gumshoe.merge(object, object)
 	
 	

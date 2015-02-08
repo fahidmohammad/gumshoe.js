@@ -19,8 +19,8 @@ Include the Gumshoe.js file in the bottom of your page:
 // Change the endpoint from the Hyatt default
 Gumshoe.endpoint = "/data";
 
-// Customize the prefix for the event ID for better tracking purposes
-Gumshoe.prefix = "my-custom-data-event";
+// Customize the suffix for the event ID for better tracking purposes
+Gumshoe.suffix = "my-custom-data-event";
 ```
 
 ## Custom Events
