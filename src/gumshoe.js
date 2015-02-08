@@ -3,15 +3,18 @@
 (function() {
 	
 	/**
-	 * Creates the Gumshoe global function for use.
-	 * 
-	 * @param {string} endpoint - The endpoint to direct requests to.  Defaults to /data.
+	 * Storage unit for listeners.
 	 */
-	var Gumshoe = this.Gumshoe = function(endpoint) {
-		this.endpoint = endpoint || "/data";
-		this.listeners = {
-			record: []
-		};
+	var listeners = {
+		record: []
+	};
+	
+	
+	/**
+	 * The Gumshoe global object for use.
+	 */
+	var Gumshoe = this.Gumshoe = {
+		endpoint = "/data"
 	};
 	
 	
@@ -20,7 +23,13 @@
 	 * 
 	 * @param {string} eventName - The name of the event to log.
 	 * @param {object} data - The data to log for the event.
+	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
 	 */
+	Gumshoe.record = function(eventName, data, synchronous) {
+		
+	};
+	
+	/*
 	Gumshoe.prototype.record = function(eventName, data) {
 		var defaults = {
 			"event_id":         Gumshoe.generateUUID(),
@@ -39,8 +48,9 @@
 		Gumshoe.logInfo(endpoint + " ==> " + JSON.stringify(ajaxData)));
 		
 	    fireRequest(endpoint, ajaxData, false);
-	    fireEvent(this.listeners.record, ajaxData);
+	    fireEvent(listeners.record, ajaxData);
 	};
+	*/
 	
 	
 	/**
@@ -49,8 +59,8 @@
 	 * @param {string} name - The name of the event to listen on.
 	 * @param {function} listener - The callback function to trigger on event.
 	 */
-	Gumshoe.prototype.on = function(name, listener) {
-		this.listeners[name].push(listener);
+	Gumshoe.on = function(name, listener) {
+		listeners[name].push(listener);
 	};
 	
 	

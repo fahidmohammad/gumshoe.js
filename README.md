@@ -17,7 +17,7 @@ Include the Gumshoe.js file in the bottom of your page:
 
 ```javascript
 // Change the endpoint from the Hyatt default
-Gumshoe.endpoint = "/data";
+Gumshoe.endpoint = "/my-data-endpoint";
 
 // Customize the suffix for the event ID for better tracking purposes
 Gumshoe.suffix = "my-custom-data-event";
@@ -31,6 +31,13 @@ The Gumshoe library can also record asynchronous events:
 Gumshoe.record("my_event", {
 	my_datapoint: "my value"
 });
+```
+
+Events are sent asynchronously by default, but an optional third parameter will cause a recorded
+event to be logged in a synchronous manner:
+
+```javascript
+Gumshoe.record("my_event", { my_datapoint: "my value" }, true);
 ```
 
 
