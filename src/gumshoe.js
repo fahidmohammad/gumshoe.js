@@ -26,25 +26,22 @@
 	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
 	 */
 	Gumshoe.record = function(eventName, data, synchronous) {
-		var formattedData = formatData(data);
+		var formattedData = Gumshoe.formatData(data);
 		
 		if (!formattedData) {
 			Gumshoe.logError("record", "Data in improper format for Gumshoe.");
 			return;
 		}
 		
-		var result = fireRequest(formattedData, synchronous);
+		var result = Gumshoe.fireRequest(formattedData, synchronous);
 		
 		if (result) {
-			fireEvent(listeners.record, formattedData);
+			Gumshoe.fireEvent(listeners.record, formattedData);
+			Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(formattedData)));
 		}
 		
 		return result;
 	};
-	
-	/*
-		Gumshoe.logInfo(endpoint + " ==> " + JSON.stringify(ajaxData)));
-	*/
 	
 	
 	/**
@@ -66,7 +63,7 @@
 	Gumshoe.generateUUID = function() {
 		
 		// Assists with UUID creation
-		function seed() {
+		var seed = function() {
 			return (
 				((Math.random() + 1) * 0x10000) | 0
 			).toString(16).substring(1);
@@ -134,7 +131,7 @@
 	 * 
 	 * @return {object} The properly formatted object.
 	 */
-	function formatData(data) {
+	Gumshoe.formatData = function(data) {
 		var result = Gumshoe.merge({}, data);
 		
 		// Set a unique ID on this event
@@ -157,14 +154,14 @@
 		
 		// Ensure the timestamp is a string
 		if (typeof result.client_timestamp !== "string") {
-			result.client_timestamp = formatTimestamp(result.client_timestamp);
+			result.client_timestamp = Gumshoe.formatTimestamp(result.client_timestamp);
 		}
 		
 		return result;
 	}
 	
 	
-	// fireRequest(data, synchronous)
+	// Gumshoe.fireRequest = function(data, synchronous)
 	
 	/**
 	 * Fires an event at the provided listeners.
@@ -172,7 +169,7 @@
 	 * @param {string} listeners - An array of listener callbacks to call.
 	 * @param {object} data - The data to provide with the callback.
 	 */
-	function fireEvent(listeners, data) {
+	Gumshoe.fireEvent = function(listeners, data) {
 		for (var i in listeners) {
 			try {
 				listeners[i](data);
@@ -191,7 +188,7 @@
 	 * 
 	 * @return {array} The combined arrays.
 	 */
-	function merge(source, data) {
+	Gumshoe.merge = function(source, data) {
 		var key, result = {};
 		
 		for (key in source) {
@@ -215,10 +212,10 @@
 	 * 
 	 * @return {string} The formatted timestamp.
 	 */
-	function formatTimestamp(date) {
+	Gumshoe.formatTimestamp = function(date) {
 		
 		// See https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/toISOString#Compatibility
-		function pad(number) {
+		var pad = function(number) {
 			var s = String(number);
 			if (s.length === 1) {
 				s = '0' + s;
