@@ -51,75 +51,6 @@
 	
 	
 	/**
-	 * Generates and returns a UUID.
-	 * 
-	 * @return {string} The UUID generated.
-	 */
-	Gumshoe.generateUUID = function() {
-		
-		// Assists with UUID creation
-		var seed = function() {
-			return (
-				((Math.random() + 1) * 0x10000) | 0
-			).toString(16).substring(1);
-		}
-		
-		var uuid = 
-			seed() + seed() + "-" +
-			seed() + "-" +
-			seed() + "-" +
-			seed() + "-" +
-			seed() + seed() + seed();
-		
-		if (Gumshoe.suffix) {
-			uuid += "-" + encodeURI(Gumshoe.suffix);
-		}
-		
-		return uuid;
-	};
-	
-	
-	/**
-	 * Sends an informative log to the console, if debugging is enabled.
-	 * 
-	 * @param {string} log - The log data to send to the console.
-	 */
-	Gumshoe.logInfo = function(log) {
-		if (Gumshoe.debug) {
-			console.log(log);
-		}
-	};
-	
-	
-	/**
-	 * Sends a warning to the console, if debugging is enabled.
-	 * 
-	 * @param {string} source - The source of the warning.
-	 * @param {string} warning - The warning to log.
-	 */
-	Gumshoe.logWarning = function(source, warning) {
-		if (Gumshoe.debug) {
-			console.group("Gumshoe Warning (%s)", source);
-			console.warn(warning);
-			console.groupEnd();
-		}
-	};
-	
-	
-	/**
-	 * Throws an error from the Gumshoe library, if debugging is enabled.
-	 * 
-	 * @param {string} source - The source of the error.
-	 * @param {string} error - The error string to throw.
-	 */
-	Gumshoe.logError = function(source, error) {
-		if (Gumshoe.debug) {
-			throw "Gumshoe(" + source + ") ERROR: " + error;
-		}
-	};
-	
-	
-	/**
 	 * Formats a data message to the proper Gumshoe format.
 	 * 
 	 * @param {object} data - The data object to format.
@@ -389,6 +320,75 @@
 			pad(date.getUTCMinutes()) + ":" +
 			pad(date.getUTCSeconds()) + "." +
 			String((now.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) + "Z";
+	};
+	
+	
+	/**
+	 * Generates and returns a UUID.
+	 * 
+	 * @return {string} The UUID generated.
+	 */
+	Gumshoe.generateUUID = function() {
+		
+		// Assists with UUID creation
+		var seed = function() {
+			return (
+				((Math.random() + 1) * 0x10000) | 0
+			).toString(16).substring(1);
+		}
+		
+		var uuid = 
+			seed() + seed() + "-" +
+			seed() + "-" +
+			seed() + "-" +
+			seed() + "-" +
+			seed() + seed() + seed();
+		
+		if (Gumshoe.suffix) {
+			uuid += "-" + encodeURI(Gumshoe.suffix);
+		}
+		
+		return uuid;
+	};
+	
+	
+	/**
+	 * Sends an informative log to the console, if debugging is enabled.
+	 * 
+	 * @param {string} log - The log data to send to the console.
+	 */
+	Gumshoe.logInfo = function(log) {
+		if (Gumshoe.debug) {
+			console.log(log);
+		}
+	};
+	
+	
+	/**
+	 * Sends a warning to the console, if debugging is enabled.
+	 * 
+	 * @param {string} source - The source of the warning.
+	 * @param {string} warning - The warning to log.
+	 */
+	Gumshoe.logWarning = function(source, warning) {
+		if (Gumshoe.debug) {
+			console.group("Gumshoe Warning (%s)", source);
+			console.warn(warning);
+			console.groupEnd();
+		}
+	};
+	
+	
+	/**
+	 * Throws an error from the Gumshoe library, if debugging is enabled.
+	 * 
+	 * @param {string} source - The source of the error.
+	 * @param {string} error - The error string to throw.
+	 */
+	Gumshoe.logError = function(source, error) {
+		if (Gumshoe.debug) {
+			throw "Gumshoe(" + source + ") ERROR: " + error;
+		}
 	};
 	
 	
