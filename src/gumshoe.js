@@ -33,14 +33,7 @@
 			return;
 		}
 		
-		var result = Gumshoe.fireRequest(formattedData, synchronous);
-		
-		if (result) {
-			Gumshoe.fireEvent(listeners.record, formattedData);
-			Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(formattedData)));
-		}
-		
-		return result;
+		return Gumshoe.fireRequest(formattedData, synchronous);
 	};
 	
 	
@@ -158,10 +151,31 @@
 		}
 		
 		return result;
-	}
+	};
 	
 	
-	// Gumshoe.fireRequest = function(data, synchronous)
+	/**
+	 * Handles request processing for Gumshoe events cross-browser.
+	 */
+	Gumshoe.fireRequest = function(data, synchronous) {
+	    if (data === undefined || (data instanceof Array && data.length === 0)) {
+	      Gumshoe.logError("No data to send in request.");
+	      return;
+	    }
+		
+	    if (!Gumshoe.endpoint) {
+	      Gumshoe.logError("No endpoint defined for request.");
+	      return;
+	    }
+		
+		// Determine if the endpoint is on another origin
+		// @TODO
+		
+		// Announcements
+		Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(formattedData)));
+		Gumshoe.fireEvent(listeners.record, formattedData);
+	};
+	
 	
 	/**
 	 * Fires an event at the provided listeners.
@@ -177,7 +191,7 @@
 				Gumshoe.logWarning("event", "Error calling listener " + listeners[i].toString());
 			}
 		}
-	}
+	};
 	
 	
 	/**
@@ -200,7 +214,7 @@
 		}
 		
 		return result;
-	}
+	};
 	
 	
 	/**
@@ -231,6 +245,6 @@
 			pad(date.getUTCMinutes()) + ":" +
 			pad(date.getUTCSeconds()) + "." +
 			String((now.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) + "Z";
-	}
+	};
 	
 }).call(this);
