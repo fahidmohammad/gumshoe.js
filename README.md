@@ -9,11 +9,9 @@ appended significantly.
 
 1. Include the gumshoe.js file at the bottom of your page:
 	
-	```html
-	
-	<script src="gumshoe.js" type="text/javascript"></script>
-	
-	```
+```html
+<script src="gumshoe.js" type="text/javascript"></script>
+```
 	
 2. (Optional) Set any optional Gumshoe parameters, after loading the library, to customize reporting:
 	
