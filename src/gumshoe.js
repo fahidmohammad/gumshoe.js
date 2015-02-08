@@ -26,30 +26,24 @@
 	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
 	 */
 	Gumshoe.record = function(eventName, data, synchronous) {
+		var formattedData = formatData(data);
 		
-	};
-	
-	/*
-	Gumshoe.prototype.record = function(eventName, data) {
-		var defaults = {
-			"event_id":         Gumshoe.generateUUID(),
-			"event_name":       eventName.toString().toLowerCase(),
-			"client_timestamp": formatTimestamp(new Date())
-		};
-		
-		var ajaxData = merge(data, defaults);
-		var endpoint = this.endpoint || Gumshoe.endpoint;
-		
-		if (!endpoint) {
-			Gumshoe.logError("record", "No endpoint defined");
+		if (!formattedData) {
+			Gumshoe.logError("record", "Data in improper format for Gumshoe.");
 			return;
 		}
 		
-		Gumshoe.logInfo(endpoint + " ==> " + JSON.stringify(ajaxData)));
+		var result = fireRequest(formattedData, synchronous);
 		
-	    fireRequest(endpoint, ajaxData, false);
-	    fireEvent(listeners.record, ajaxData);
+		if (result) {
+			fireEvent(listeners.record, formattedData);
+		}
+		
+		return result;
 	};
+	
+	/*
+		Gumshoe.logInfo(endpoint + " ==> " + JSON.stringify(ajaxData)));
 	*/
 	
 	
@@ -133,7 +127,44 @@
 	};
 	
 	
-	// fireRequest(endpoint, data, synchronous)
+	/**
+	 * Formats a data message to the proper Gumshoe format.
+	 * 
+	 * @param {object} data - The data object to format.
+	 * 
+	 * @return {object} The properly formatted object.
+	 */
+	function formatData(data) {
+		var result = Gumshoe.merge({}, data);
+		
+		// Set a unique ID on this event
+		result.event_id = Gumshoe.generateUUID();
+		
+		// Ensure all event names are lower case
+		if (result.event_name) {
+			var lowercase = result.event_name.toString().toLowerCase();
+			
+			if (lowercase != result.event_name) {
+				Gumshoe.logWarning("record", "event_name changed from " + result.event_name + " to " + lowercase);
+				result.event_name = lowercase;
+			}
+		}
+		
+		// Add a timestamp if one has not been set
+		if (!result.client_timestamp) {
+			result.client_timestamp = formatTimestamp(new Date());
+		}
+		
+		// Ensure the timestamp is a string
+		if (typeof result.client_timestamp !== "string") {
+			result.client_timestamp = formatTimestamp(result.client_timestamp);
+		}
+		
+		return result;
+	}
+	
+	
+	// fireRequest(data, synchronous)
 	
 	/**
 	 * Fires an event at the provided listeners.
