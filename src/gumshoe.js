@@ -226,7 +226,21 @@
 	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.post = function(data, synchronous) {
-		
+		withRetries(2, function(retry) {
+			
+			jQuery.ajax({
+				type:			"POST",
+				url:			Gumshoe.endpoint,
+				contentType:	"text/plain",
+				async:			!synchronous,
+				data:			JSON.stringify(data),
+				
+				error: function() {
+					retry();
+				}
+			});
+			
+		});
 	};
 	
 	
@@ -273,7 +287,18 @@
 	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.postIE = function(data, synchronous) {
-		
+		withRetries(2, function(retry) {
+			
+			var xhr = new global.XDomainRequest();
+			
+			xdr.onerror = function() {
+				retry();
+			};
+			
+			xdr.open("post", Gumshoe.endpoint);
+			xdr.send(JSON.stringify(data));
+			
+		});
 	};
 	
 	
@@ -375,7 +400,7 @@
 	 * 
 	 * @return The result of the method.
 	 */
-    function withRetries(retries, method) {
+    var withRetries = function(retries, method) {
 		var doRetry = function() {
 			if (retriesLeft > 0) {
 				retriesLeft--;

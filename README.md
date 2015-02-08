@@ -5,11 +5,17 @@ information to the Hyatt Analytics Warehouse; however, the information reported 
 appended significantly.
 
 
+# Dependencies
+
+This library requires JQuery to be available before it is loaded.
+
+
 # Usage
 
 Include the Gumshoe.js file in the bottom of your page:
 
 ```html
+<script src="jquery.js" type="text/javascript"></script>
 <script src="gumshoe.js" type="text/javascript"></script>
 ```
 
