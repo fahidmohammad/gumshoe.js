@@ -1,8 +1,6 @@
 # Gumshoe
 
-A JavaScript tracking class for Hyatt.com analytics.  By default, the script will report basic
-information to the Hyatt Analytics Warehouse; however, the information reported can be modified and
-appended significantly.
+A JavaScript tracking class for Hyatt.com analytics.
 
 
 # Dependencies
