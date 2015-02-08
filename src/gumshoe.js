@@ -278,6 +278,25 @@
 	
 	
 	/**
+	 * Returns the XHR to use for all requests.
+	 * 
+	 * @return {object} the XHR object to use for requests.
+	 */
+	Gumshoe.getXHR = function() {
+		if (global.XMLHttpRequests && ('file:' != global.location.protocol || !global.ActiveXObject)) {
+			return new XMLHttpRequest;
+		}
+		
+		try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e) {}
+		try { return new ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch(e) {}
+		try { return new ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch(e) {}
+		try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e) {}
+		
+		return false;
+	};
+	
+	
+	/**
 	 * Fires an event at the provided listeners.
 	 * 
 	 * @param {string} listeners - An array of listener callbacks to call.
