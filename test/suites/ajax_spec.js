@@ -45,8 +45,6 @@ describe("Posting a raw AJAX call", function() {
 	var getXHRBackup;
 
 	var xhrReturn = {
-		readyState: 1,
-		statusCode: 200,
 		open: function() { },
 		setRequestHeader: function() { },
 		onreadystatechange: function() { },
@@ -56,16 +54,16 @@ describe("Posting a raw AJAX call", function() {
 	};
 
 	beforeEach(function() {
-		Gumshoe.debug = true;
-
 		getXHRBackup = Gumshoe.getXHR;
 
 		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn(xhrReturn);
+
+		xhrReturn.readyState = 4;
+		xhrReturn.statusCode = 200;
 	});
 
 	afterEach(function() {
 		Gumshoe.getXHR = getXHRBackup;
-		Gumshoe.debug = false;
 	});
 
 	it ("should fail if the XHR is invalid", function() {
@@ -90,8 +88,6 @@ describe("Posting a raw AJAX call", function() {
 
 		expect(Gumshoe.getXHR)
 			.toHaveBeenCalled();
-
-		xhrReturn.readyState = 4;
 	});
 
 	it ("should retry twice when a bad status code is returned", function() {
@@ -105,8 +101,6 @@ describe("Posting a raw AJAX call", function() {
 
 		expect(Gumshoe.getXHR.callCount)
 			.toEqual(3);
-
-		xhrReturn.statusCode = 200;
 	});
 
 	it ("should be successful if the XHR returns well", function() {
@@ -125,3 +119,4 @@ describe("Posting a raw AJAX call", function() {
 
 // fireRequest
 
+// postIE

@@ -173,6 +173,8 @@
 	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.post = function(data, synchronous) {
+		var status = false;
+
 		withRetries(2, function(retry) {
 			
 			jQuery.ajax({
@@ -184,16 +186,20 @@
 				
 				error: function() {
 					retry();
+				},
+
+				success: function() {
+					status = true;
 				}
 			});
-
-			return true;
 			
 		});
 
-		Gumshoe.logWarning("post", "Failed to post after 3 attempts");
+		if (!status) {
+			Gumshoe.logWarning("post", "Failed to post after 3 attempts");
+		}
 
-		return false;
+		return status;
 	};
 	
 	
@@ -206,11 +212,13 @@
 	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.postRaw = function(data, synchronous) {
+		var status = false;
+
 		withRetries(2, function(retry) {
 			
 			var xhr = Gumshoe.getXHR();
 			if (!xhr) {
-				return false;
+				return;
 			}
 			
 			xhr.open("POST", Gumshoe.endpoint, !synchronous);
@@ -219,23 +227,26 @@
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState != 4) {
 					Gumshoe.logWarning("postRaw", "XHR not in ready state");
-
-					return false;
+					return;
 				}
 				if (xhr.status != 200) {
 					retry();
+				} else {
+					status = true;
 				}
 			}
 			
 			xhr.send(JSON.stringify(data));
 			
-			return true;
+			return status;
 
 		});
 
-		Gumshoe.logWarning("postRaw", "Failed to post after 3 attempts");
+		if (!status) {
+			Gumshoe.logWarning("postRaw", "Failed to post after 3 attempts");
+		}
 
-		return false;
+		return status;
 	};
 	
 	
@@ -247,22 +258,29 @@
 	 * @return {boolean} Whether the call was successful.
 	 */
 	Gumshoe.postIE = function(data) {
+		var status = false;
+
 		withRetries(2, function(retry) {
 			
 			var xdr = new global.XDomainRequest();
 			
 			xdr.onerror = function() {
+				status = false;
 				retry();
 			};
 			
+			status = true;
+
 			xdr.open("post", Gumshoe.endpoint);
 			xdr.send(JSON.stringify(data));
-			
-			return true;
 
 		});
 
-		return false;
+		if (!status) {
+			Gumshoe.logWarning("postIE", "Failed to post after 3 attempts");
+		}
+
+		return status;
 	};
 	
 	
@@ -434,7 +452,7 @@
 			}
 		};
 		
-		return method(doRetry);
+		method(doRetry);
 	};
 
 
