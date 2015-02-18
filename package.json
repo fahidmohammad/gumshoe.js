@@ -1,0 +1,25 @@
+{
+  "name": "gumshoe.js",
+  "version": "1.0.0",
+
+  "description": "JavaScript class that provides communication standards for interacting with the Hyatt analytics data warehouse.",
+
+  "contributors": [{
+    "name": "Andrew Vaughan",
+    "email": "andrew.vaughan@hyatt.com"
+  }],
+
+  "repository": {
+    "type": "git",
+    "url": "http://stash.hyattdev.com:7990/stash/projects/AN/repos/gumshoe.js"
+  },
+
+  "dependencies": {
+    
+  },
+
+  "devDependencies": {
+    "jstest":        "~1.0.0",
+    "uglify-js":     "~2.4.0"
+  }
+}
