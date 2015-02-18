@@ -19,13 +19,11 @@ describe("XHR requests", function() {
 describe("Posting a standard AJAX call", function() {
 
 	beforeEach(function() {
-		Gumshoe.debug = true;
-
 		jQuery = jasmine.createSpyObj('jQuery', ['ajax']);
 	});
 
 	afterEach(function() {
-		Gumshoe.debug = false;
+		jQuery = null;
 	});
 
 	it ("should rely on jQuery", function() {
@@ -82,7 +80,7 @@ describe("Posting a raw AJAX call", function() {
 		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn(xhrReturn);
 
 		xhrReturn.readyState = 4;
-		xhrReturn.statusCode = 200;
+		xhrReturn.status = 200;
 	});
 
 	afterEach(function() {
@@ -90,6 +88,8 @@ describe("Posting a raw AJAX call", function() {
 	});
 
 	it ("should fail if the XHR is invalid", function() {
+		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn(false);
+
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
@@ -117,7 +117,7 @@ describe("Posting a raw AJAX call", function() {
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
-		xhrReturn.statusCode = 404;
+		xhrReturn.status = 404;
 		
 		expect(Gumshoe.postRaw({ 'foo' : 'bar' }, false))
 			.toBeFalsy();
