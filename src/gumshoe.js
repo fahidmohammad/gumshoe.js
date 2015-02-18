@@ -186,8 +186,12 @@
 					retry();
 				}
 			});
+
+			return true;
 			
 		});
+
+		return false;
 	};
 	
 	
@@ -204,7 +208,7 @@
 			
 			var xhr = Gumshoe.getXHR();
 			if (!xhr) {
-				return;
+				return false;
 			}
 			
 			xhr.open("POST", Gumshoe.endpoint, !synchronous);
@@ -212,7 +216,7 @@
 			
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState != 4) {
-					return;
+					return false;
 				}
 				if (xhr.status != 200) {
 					retry();
@@ -221,7 +225,11 @@
 			
 			xhr.send(JSON.stringify(data));
 			
+			return true;
+
 		});
+
+		return false;
 	};
 	
 	
@@ -244,7 +252,11 @@
 			xdr.open("post", Gumshoe.endpoint);
 			xdr.send(JSON.stringify(data));
 			
+			return true;
+
 		});
+
+		return false;
 	};
 	
 	
@@ -410,8 +422,8 @@
 	 */
     var withRetries = function(retries, method) {
 		var doRetry = function() {
-			if (retriesLeft > 0) {
-				retriesLeft--;
+			if (retries > 0) {
+				retries--;
 				method(doRetry);
 			}
 		};
