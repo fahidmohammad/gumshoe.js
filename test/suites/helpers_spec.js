@@ -27,7 +27,6 @@ describe("Gumshoe.merge()", function() {
 describe("Gumshoe.formatTimestamp()", function() {
 
  	it ("should format timestamps to a proper ISO Strings", function() {
- 		
  		expect(Gumshoe.formatTimestamp(new Date('2001')))
  			.toBe((new Date(Date.UTC(2001, 0, 1, 0, 0, 0, 0))).toISOString());
 
@@ -42,10 +41,11 @@ describe("Gumshoe.formatTimestamp()", function() {
 
  		expect(Gumshoe.formatTimestamp(new Date('2001-02-03T23:32:02.250Z')))
  			.toBe((new Date(Date.UTC(2001, 1, 3, 23, 32, 2, 250))).toISOString());
+	});
 
- 		expect(Gumshoe.formatTimestamp(new Date('foobar')))
+	it ("should throw errors on invalid dates", function() {
+		expect(Gumshoe.formatTimestamp(new Date('foobar')))
  			.toThrow();
-
 	});
 
 });

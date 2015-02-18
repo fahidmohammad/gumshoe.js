@@ -301,6 +301,10 @@
 	 * @return {string} The formatted timestamp.
 	 */
 	Gumshoe.formatTimestamp = function(date) {
+		if (!(date instanceof Date) || isNaN(date.getTime())) {
+			throw "Invalid date provided to Gumshoe.formatTimestamp().";
+		}
+
 		return date.getUTCFullYear() + "-" +
 			pad(date.getUTCMonth() + 1) + "-" +
 			pad(date.getUTCDate()) + "T" + 
