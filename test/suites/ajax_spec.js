@@ -140,6 +140,53 @@ describe("Posting a raw AJAX call", function() {
 });
 
 
+describe("Posting an AJAX call in IE", function() {
+
+	var xdrReturn = {
+		open: function() { }
+	};
+
+	beforeEach(function() {
+		global = {};
+		global.XDomainRequest = jasmine.createSpy(global, 'XDomainRequest').andReturn(xdrReturn);
+
+		xdrReturn.send = function() { };
+	});
+
+	afterEach(function() {
+		global.XDomainRequest = null;
+		global = null;
+	});
+
+	it ("should retry twice when a bad status code is returned", function() {
+		expect(global.XDomainRequest)
+			.toBeDefined();
+
+		xdrReturn.send = function() {
+			this.onerror();
+		};
+		
+		expect(Gumshoe.postIE({ 'foo' : 'bar' }))
+			.toBeFalsy();
+
+		expect(global.XDomainRequest.callCount)
+			.toEqual(3);
+	});
+
+	it ("should be successful if the XDR returns well", function() {
+		expect(global.XDomainRequest)
+			.toBeDefined();
+
+		expect(Gumshoe.postIE({ 'foo' : 'bar' }))
+			.toBeTruthy();
+
+		expect(global.XDomainRequest)
+			.toHaveBeenCalled();
+	});
+
+});
+
+
 // fireRequest
 
 // postIE
