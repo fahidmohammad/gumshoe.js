@@ -1,17 +1,19 @@
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
 
-target  := build/gumshoe.js
+target := build/gumshoe.js
 
 source_files := src/gumshoe.js
+
+spec_files := test/gumshoe_spec.js
 
 
 .PHONY: all clean test
 
 all: $(target)
 
-test: $(target)
-	phantom-jasmine test/gumshoe-tests.js
+test: $(target) $(spec_files)
+	phantom-jasmine $^
 
 clean:
 	rm -rf build
