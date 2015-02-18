@@ -1,4 +1,4 @@
-describe("Gumshoe.merge()", function() {
+describe("Object merging", function() {
 
 	beforeEach(function() {
 		Gumshoe.debug = true;
@@ -33,7 +33,7 @@ describe("Gumshoe.merge()", function() {
 });
 
 
-describe("Gumshoe.formatTimestamp()", function() {
+describe("Timestamp formatting", function() {
 
 	beforeEach(function() {
 		Gumshoe.debug = true;
@@ -68,7 +68,7 @@ describe("Gumshoe.formatTimestamp()", function() {
 });
 
 
-describe("Gumshoe.generateUUID()", function() {
+describe("UUID generation", function() {
 
 	beforeEach(function() {
 		Gumshoe.debug = true;
