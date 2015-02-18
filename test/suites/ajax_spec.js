@@ -44,24 +44,27 @@ describe("Posting a raw AJAX call", function() {
 
 	var getXHRBackup;
 
+	var xhrReturn = {
+		readyState: 1,
+		statusCode: 200,
+		open: function() { },
+		setRequestHeader: function() { },
+		onreadystatechange: function() { },
+		send: function(data) {
+			this.onreadystatechange();
+		}
+	};
+
 	beforeEach(function() {
 		Gumshoe.debug = true;
 
 		getXHRBackup = Gumshoe.getXHR;
 
-		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn({
-			open: function() { },
-			setRequestHeader: function() { },
-			onreadystatechange: function() { },
-			send: function(data) {
-				this.onreadystatechange();
-			}
-		});
+		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn(xhrReturn);
 	});
 
 	afterEach(function() {
 		Gumshoe.getXHR = getXHRBackup;
-
 		Gumshoe.debug = false;
 	});
 
@@ -80,33 +83,30 @@ describe("Posting a raw AJAX call", function() {
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
-		Gumshoe.getXHR.send = function(data) {
-			this.readyState = 4;
-			this.onreadystatechange();
-		};
+		xhrReturn.readyState = 1;
 
 		expect(Gumshoe.postRaw({ 'foo' : 'bar' }, false))
 			.toBeFalsy();
 
 		expect(Gumshoe.getXHR)
 			.toHaveBeenCalled();
+
+		xhrReturn.readyState = 4;
 	});
 
 	it ("should retry twice when a bad status code is returned", function() {
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
-		Gumshoe.getXHR.send = function(data) {
-			this.readyState = 1;
-			this.status = 404;
-			this.onreadystatechange();
-		};
-
+		xhrReturn.statusCode = 404;
+		
 		expect(Gumshoe.postRaw({ 'foo' : 'bar' }, false))
 			.toBeFalsy();
 
 		expect(Gumshoe.getXHR.callCount)
 			.toEqual(3);
+
+		xhrReturn.statusCode = 200;
 	});
 
 });
