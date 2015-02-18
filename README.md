@@ -18,7 +18,7 @@ There are several dependencies required for builds, all of which are contained i
 2. Install package dependencies by running `npm install` in the project root directory
 3. Run `make` in the project root directory
 
-To run tests with Phantom.js, perform steps 1-2 above, and continue with the following:
+To run tests with Phantom.js and Jasmine, perform steps 1-2 above, and continue with the following:
 
 1. Run `make test` in the project root directory
 
