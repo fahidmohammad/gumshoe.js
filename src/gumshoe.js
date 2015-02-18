@@ -14,7 +14,7 @@
 	 * The Gumshoe global object for use.
 	 */
 	var Gumshoe = this.Gumshoe = {
-		endpoint = "/data"
+		endpoint: "/data"
 	};
 	
 	
@@ -141,7 +141,7 @@
 		}
 		
 		// Announcements
-		Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(data)));
+		Gumshoe.logInfo(Gumshoe.endpoint + " ==> " + JSON.stringify(data));
 		Gumshoe.fireEvent(listeners.record, data);
 		
 		return result;
@@ -213,14 +213,13 @@
 	 * Handles cross-domain requests for IE.
 	 * 
 	 * @param {object} data - The data to log for the event.
-	 * @param {boolean} synchronous - Whether to make the request synchronously (default false).
-	 * 
+	 *
 	 * @return {boolean} Whether the call was successful.
 	 */
-	Gumshoe.postIE = function(data, synchronous) {
+	Gumshoe.postIE = function(data) {
 		withRetries(2, function(retry) {
 			
-			var xhr = new global.XDomainRequest();
+			var xdr = new global.XDomainRequest();
 			
 			xdr.onerror = function() {
 				retry();
@@ -302,18 +301,7 @@
 	 * @return {string} The formatted timestamp.
 	 */
 	Gumshoe.formatTimestamp = function(date) {
-		
-		// See https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/toISOString#Compatibility
-		var pad = function(number) {
-			var s = String(number);
-			if (s.length === 1) {
-				s = '0' + s;
-			}
-			return s;
-		}
-		
-		return
-			date.getUTCFullYear() + "-" +
+		return date.getUTCFullYear() + "-" +
 			pad(date.getUTCMonth() + 1) + "-" +
 			pad(date.getUTCDate()) + "T" + 
 			pad(date.getUTCHours()) + ":" + 
@@ -409,6 +397,24 @@
 		};
 		
 		return method(doRetry);
+	};
+
+
+	/**
+	 * Pads numbers for dates
+	 * 
+	 * @link https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Date/toISOString#Compatibility
+	 * 
+	 * @param {int} number - The number to pad to two digits.
+	 * 
+	 * @return The padded number.
+	 */
+	var pad = function(number) {
+		var s = String(number);
+		if (s.length === 1) {
+			s = '0' + s;
+		}
+		return s;
 	};
 	
 }).call(this);
