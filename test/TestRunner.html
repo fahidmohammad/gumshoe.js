@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gumshoe Tests</title>
+    <link rel="stylesheet" type="text/css" href="../node_modules/phantom-jasmine/vendor/jasmine-1.2.0/jasmine.css">
+    <script type="text/javascript" src="../node_modules/phantom-jasmine/vendor/jasmine-1.2.0/jasmine.js"></script>
+    <script type="text/javascript" src="../node_modules/phantom-jasmine/vendor/jasmine-1.2.0/jasmine-html.js"></script>
+
+    <script type="text/javascript" src="../node_modules/phantom-jasmine/lib/console-runner.js"></script>
+
+    <!-- SOURCE FILES -->
+    <script type="text/javascript" src="../build/gumshoe.js"></script>
+
+    <!-- TEST FILES -->
+    <script type="text/javascript" src="gumshoe_spec.js"></script>
+  </head>
+  <body>
+
+  <script type="text/javascript">
+    var console_reporter = new jasmine.ConsoleReporter()
+    jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+    jasmine.getEnv().addReporter(console_reporter);
+    jasmine.getEnv().execute();
+  </script>
+
+  </body>
+</html>

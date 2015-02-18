@@ -5,15 +5,15 @@ target := build/gumshoe.js
 
 source_files := src/gumshoe.js
 
-spec_files := test/gumshoe_spec.js
+test_files := test/TestRunner.html
 
 
 .PHONY: all clean test
 
 all: $(target)
 
-test: $(target) $(spec_files)
-	phantom-jasmine $^
+test: $(target) $(test_files)
+	phantomjs test/run-jasmine.js $(test_files)
 
 clean:
 	rm -rf build
