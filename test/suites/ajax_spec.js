@@ -109,6 +109,17 @@ describe("Posting a raw AJAX call", function() {
 		xhrReturn.statusCode = 200;
 	});
 
+	it ("should be successful if the XHR returns well", function() {
+		expect(Gumshoe.getXHR)
+			.toBeDefined();
+
+		expect(Gumshoe.postRaw({ 'foo' : 'bar' }, false))
+			.toBeTruthy();
+
+		expect(Gumshoe.getXHR)
+			.toHaveBeenCalled();
+	});
+
 });
 
 

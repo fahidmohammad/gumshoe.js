@@ -191,6 +191,8 @@
 			
 		});
 
+		Gumshoe.logWarning("post", "Failed to post after 3 attempts");
+
 		return false;
 	};
 	
@@ -216,6 +218,8 @@
 			
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState != 4) {
+					Gumshoe.logWarning("postRaw", "XHR not in ready state");
+
 					return false;
 				}
 				if (xhr.status != 200) {
@@ -228,6 +232,8 @@
 			return true;
 
 		});
+
+		Gumshoe.logWarning("postRaw", "Failed to post after 3 attempts");
 
 		return false;
 	};
