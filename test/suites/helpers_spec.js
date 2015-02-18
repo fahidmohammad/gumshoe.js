@@ -1,5 +1,13 @@
 describe("Gumshoe.merge()", function() {
 
+	beforeEach(function() {
+		Gumshoe.debug = true;
+	});
+
+	afterEach(function() {
+		Gumshoe.debug = false;
+	});
+
  	it ("should merge objects correctly", function() {
  		var defaults = {
  			'a' : 1,
@@ -13,18 +21,27 @@ describe("Gumshoe.merge()", function() {
  			'd' : 'baz'
  		};
 
- 		expect(Gumshoe.merge(defaults, additions)).toEqual({
- 			'a' : 1,
- 			'b' : 'foo',
- 			'c' : 'bar',
- 			'd' : 'baz'
- 		});
+ 		expect(Gumshoe.merge(defaults, additions))
+ 			.toEqual({
+ 				'a' : 1,
+ 				'b' : 'foo',
+ 				'c' : 'bar',
+ 				'd' : 'baz'
+ 			});
  	});
 
 });
 
 
 describe("Gumshoe.formatTimestamp()", function() {
+
+	beforeEach(function() {
+		Gumshoe.debug = true;
+	});
+
+	afterEach(function() {
+		Gumshoe.debug = false;
+	});
 
  	it ("should format timestamps to a proper ISO Strings", function() {
  		expect(Gumshoe.formatTimestamp(new Date('2001')))
@@ -44,7 +61,7 @@ describe("Gumshoe.formatTimestamp()", function() {
 	});
 
 	it ("should throw errors on invalid dates", function() {
-		expect(Gumshoe.formatTimestamp(new Date('foobar')))
+		expect(function() { Gumshoe.formatTimestamp(new Date('foobar')) })
  			.toThrow();
 	});
 
@@ -52,6 +69,14 @@ describe("Gumshoe.formatTimestamp()", function() {
 
 
 describe("Gumshoe.generateUUID()", function() {
+
+	beforeEach(function() {
+		Gumshoe.debug = true;
+	});
+
+	afterEach(function() {
+		Gumshoe.debug = false;
+	});
 
 	it ("should generate a proper UUID", function() {
 		expect(Gumshoe.generateUUID())

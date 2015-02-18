@@ -302,7 +302,7 @@
 	 */
 	Gumshoe.formatTimestamp = function(date) {
 		if (!(date instanceof Date) || isNaN(date.getTime())) {
-			throw "Invalid date provided to Gumshoe.formatTimestamp().";
+			Gumshoe.logError("formatTimestamp", "Invalid date provided.");
 		}
 
 		return date.getUTCFullYear() + "-" +
@@ -379,7 +379,7 @@
 	 */
 	Gumshoe.logError = function(source, error) {
 		if (Gumshoe.debug) {
-			throw "Gumshoe(" + source + ") ERROR: " + error;
+			throw new Error("Gumshoe(" + source + ") ERROR: " + error);
 		}
 	};
 	
