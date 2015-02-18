@@ -255,7 +255,7 @@
 	 */
 	Gumshoe.getXHR = function() {
 		if (global.XMLHttpRequests && ('file:' != global.location.protocol || !global.ActiveXObject)) {
-			return new XMLHttpRequest;
+			return new XMLHttpRequest();
 		}
 		
 		try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e) {}
