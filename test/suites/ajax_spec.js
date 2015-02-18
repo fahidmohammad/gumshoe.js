@@ -20,6 +20,8 @@ describe("Posting a standard AJAX call", function() {
 
 	beforeEach(function() {
 		Gumshoe.debug = true;
+
+		jQuery = jasmine.createSpyObj('jQuery', ['ajax']);
 	});
 
 	afterEach(function() {
@@ -27,15 +29,36 @@ describe("Posting a standard AJAX call", function() {
 	});
 
 	it ("should rely on jQuery", function() {
-		jQuery = jasmine.createSpyObj('jQuery', ['ajax']);
-
 		expect(jQuery.ajax)
 			.toBeDefined();
 
-		Gumshoe.post({ 'foo' : 'bar' }, false);
+		jQuery.ajax = jasmine.createSpy('ajax').andCallFake(function(obj) {
+			obj.success();
+		});
+
+		expect(Gumshoe.post({ 'foo' : 'bar' }, false))
+			.toBeTruthy();
 
 		expect(jQuery.ajax)
 			.toHaveBeenCalled();
+	});
+
+	it ("should retry twice when a bad status code is returned", function() {
+		expect(jQuery.ajax)
+			.toBeDefined();
+		
+		var counter = 0;
+
+		jQuery.ajax = jasmine.createSpy('ajax').andCallFake(function(obj) {
+			obj.error();
+			counter++;
+		});
+
+		expect(Gumshoe.post({ 'foo' : 'bar' }, false))
+			.toBeFalsy();
+
+		expect(counter)
+			.toEqual(3);
 	});
 
 });

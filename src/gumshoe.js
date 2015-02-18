@@ -233,12 +233,11 @@
 					retry();
 				} else {
 					status = true;
+					console.log("yiss");
 				}
 			}
 			
 			xhr.send(JSON.stringify(data));
-			
-			return status;
 
 		});
 
@@ -417,7 +416,7 @@
 	Gumshoe.logWarning = function(source, warning) {
 		if (Gumshoe.debug) {
 			console.group("Gumshoe Warning (%s)", source);
-			console.warn(warning);
+			console.warn(source + ' - ' + warning);
 			console.groupEnd();
 		}
 	};
