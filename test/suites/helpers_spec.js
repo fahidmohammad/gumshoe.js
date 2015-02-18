@@ -90,3 +90,5 @@ describe("UUID generation", function() {
 	});
 
 });
+
+//isDifferentOrigin

@@ -123,22 +123,13 @@
 	    }
 		
 		// Determine if the endpoint is on another origin
-		var isDifferentOrigin;
+		var result = false;
 		
 		var a = document.createElement('a');
 		a.href = Gumshoe.endpoint;
-		
-		// IE Check
-		if (a.host.length === 0) {
-			isDifferentOrigin = false;
-		} else {
-			isDifferentOrigin = (window.location.protocol + window.location.host !== a.protocol + a.host);
-		}
-		
-		var result = false;
-		
+
 		// Different origin requests
-		if (isDifferentOrigin) {
+		if (Gumshoe.isDifferentOrigin(window.location, a)) {
 			
 			// Handle IE calls differently (there's no differentiation between synch and async)
 			if (global.XDomainRequest) {
@@ -153,7 +144,7 @@
 		
 		// Same origin requests
 		else {
-			result = Gumshoe.post(data, syncronous);
+			result = Gumshoe.post(data, synchronous);
 		}
 		
 		// Announcements
@@ -430,6 +421,15 @@
 	Gumshoe.logError = function(source, error) {
 		if (Gumshoe.debug) {
 			throw new Error("Gumshoe(" + source + ") ERROR: " + error);
+		}
+	};
+
+
+	Gumshoe.isDifferentOrigin = function(viewport, target) {
+		if (target.host.length === 0) {
+			return false;
+		} else {
+			return (viewport.protocol + viewport.host !== target.protocol + target.host);
 		}
 	};
 	

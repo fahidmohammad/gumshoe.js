@@ -30,7 +30,7 @@ describe("Posting a standard AJAX call", function() {
 		expect(jQuery.ajax)
 			.toBeDefined();
 
-		jQuery.ajax = jasmine.createSpy('ajax').andCallFake(function(obj) {
+		jQuery.ajax = jasmine.createSpy('jQuery.ajax').andCallFake(function(obj) {
 			obj.success();
 		});
 
@@ -47,7 +47,7 @@ describe("Posting a standard AJAX call", function() {
 		
 		var counter = 0;
 
-		jQuery.ajax = jasmine.createSpy('ajax').andCallFake(function(obj) {
+		jQuery.ajax = jasmine.createSpy('jQuery.ajax').andCallFake(function(obj) {
 			obj.error();
 			counter++;
 		});
@@ -77,7 +77,7 @@ describe("Posting a raw AJAX call", function() {
 	beforeEach(function() {
 		getXHRBackup = Gumshoe.getXHR;
 
-		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn(xhrReturn);
+		Gumshoe.getXHR = jasmine.createSpy('Gumshoe.getXHR').andReturn(xhrReturn);
 
 		xhrReturn.readyState = 4;
 		xhrReturn.status = 200;
@@ -88,7 +88,7 @@ describe("Posting a raw AJAX call", function() {
 	});
 
 	it ("should fail if the XHR is invalid", function() {
-		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn(false);
+		Gumshoe.getXHR = jasmine.createSpy('Gumshoe.getXHR').andReturn(false);
 
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
@@ -148,7 +148,7 @@ describe("Posting an AJAX call in IE", function() {
 
 	beforeEach(function() {
 		global = {};
-		global.XDomainRequest = jasmine.createSpy(global, 'XDomainRequest').andReturn(xdrReturn);
+		global.XDomainRequest = jasmine.createSpy('XDomainRequest').andReturn(xdrReturn);
 
 		xdrReturn.send = function() { };
 	});
@@ -187,6 +187,110 @@ describe("Posting an AJAX call in IE", function() {
 });
 
 
-// fireRequest
+describe("Firing a request", function() {
 
-// postIE
+	var errorHandler, postHandler, postRawHandler, postIEHandler, differentOriginHandler, oldEndpoint;
+
+	beforeEach(function() {
+		errorHandler = Gumshoe.logError;
+		postHandler = Gumshoe.post;
+		postRawHandler = Gumshoe.postRaw;
+		postIEHandler = Gumshoe.postIE;
+
+		Gumshoe.logError = jasmine.createSpy('Gumshoe.logError');
+		Gumshoe.post = jasmine.createSpy('Gumshoe.post');
+		Gumshoe.postRaw = jasmine.createSpy('Gumshoe.postRaw');
+		Gumshoe.postIE = jasmine.createSpy('Gumshoe.postIE');
+
+		differentOriginHandler = Gumshoe.isDifferentOrigin;
+
+		oldEndpoint = Gumshoe.endpoint;
+
+		global = {};
+	});
+
+	afterEach(function() {
+		Gumshoe.logError = errorHandler;
+		Gumshoe.post = postHandler;
+		Gumshoe.postRaw = postRawHandler;
+		Gumshoe.postIE = postIEHandler;
+
+		Gumshoe.isDifferentOrigin = differentOriginHandler;
+
+		Gumshoe.endpoint = oldEndpoint;
+	});
+
+	it ("should log a warning if there is no data", function() {
+		Gumshoe.fireRequest();
+		Gumshoe.fireRequest([]);
+
+		expect(Gumshoe.logError.callCount)
+			.toEqual(2);
+	});
+
+	it ("should log a warning if there is no endpoint", function() {
+		Gumshoe.endpoint = '';
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		Gumshoe.endpoint = null;
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		Gumshoe.endpoint = false;
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		expect(Gumshoe.logError.callCount)
+			.toEqual(3);
+	});
+
+	it ("should correctly tell if the request is to the same absolute origin", function() {
+		Gumshoe.isDifferentOrigin = jasmine.createSpy('Gumshoe.isDifferentOrigin').andReturn(false);
+
+		Gumshoe.endpoint = 'http://www.example.com/';
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		expect(Gumshoe.post)
+			.toHaveBeenCalled();
+	});
+
+	it ("should correctly tell if the request is to the same relative origin", function() {
+		Gumshoe.isDifferentOrigin = jasmine.createSpy('Gumshoe.isDifferentOrigin').andReturn(false);
+
+		Gumshoe.endpoint = '/test';
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		expect(Gumshoe.post)
+			.toHaveBeenCalled();
+	});
+
+	it ("should post in a raw format if cross domain", function() {
+		Gumshoe.isDifferentOrigin = jasmine.createSpy('Gumshoe.isDifferentOrigin').andReturn(true);
+
+		Gumshoe.endpoint = 'http://www.test.com/';
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		expect(Gumshoe.postRaw)
+			.toHaveBeenCalled();
+	});
+
+	it ("should post in a raw format if cross protocol", function() {
+		Gumshoe.isDifferentOrigin = jasmine.createSpy('Gumshoe.isDifferentOrigin').andReturn(true);
+
+		Gumshoe.endpoint = 'https://www.example.com/';
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		expect(Gumshoe.postRaw)
+			.toHaveBeenCalled();
+	});
+
+	it ("should handle calls to IE in an IE environment", function() {
+		Gumshoe.isDifferentOrigin = jasmine.createSpy('Gumshoe.isDifferentOrigin').andReturn(true);
+
+		global.XDomainRequest = true;
+
+		Gumshoe.fireRequest([1, 2, 3], false);
+
+		expect(Gumshoe.postIE)
+			.toHaveBeenCalled();
+	});
+
+});
