@@ -42,8 +42,12 @@ describe("Posting a standard AJAX call", function() {
 
 describe("Posting a raw AJAX call", function() {
 
+	var getXHRBackup;
+
 	beforeEach(function() {
 		Gumshoe.debug = true;
+
+		getXHRBackup = Gumshoe.getXHR;
 
 		Gumshoe.getXHR = jasmine.createSpy('getXHR').andReturn({
 			open: function() { },
@@ -56,14 +60,12 @@ describe("Posting a raw AJAX call", function() {
 	});
 
 	afterEach(function() {
+		Gumshoe.getXHR = getXHRBackup;
+
 		Gumshoe.debug = false;
 	});
 
 	it ("should fail if the XHR is invalid", function() {
-		var functionHolder = Gumshoe.getXHR;
-
-		Gumshoe.getXHR = jasmine.createSpy('getXHR');
-
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
@@ -75,8 +77,6 @@ describe("Posting a raw AJAX call", function() {
 	});
 
 	it ("should fail if the XHR is in a failure state", function() {
-		var functionHolder = Gumshoe.getXHR;
-
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
@@ -93,8 +93,6 @@ describe("Posting a raw AJAX call", function() {
 	});
 
 	it ("should retry twice when a bad status code is returned", function() {
-		var functionHolder = Gumshoe.getXHR;
-
 		expect(Gumshoe.getXHR)
 			.toBeDefined();
 
