@@ -1,4 +1,4 @@
-describe("Initialization", function() {
+describe("Gumshoe", function() {
 
 	it ("should exist", function() {
 		expect(Gumshoe)

@@ -307,7 +307,7 @@
 			pad(date.getUTCHours()) + ":" + 
 			pad(date.getUTCMinutes()) + ":" +
 			pad(date.getUTCSeconds()) + "." +
-			String((now.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) + "Z";
+			String((date.getUTCMilliseconds() / 1000).toFixed(3)).slice(2, 5) + "Z";
 	};
 	
 	

@@ -1,4 +1,4 @@
-describe("Array Helpers", function() {
+describe("Gumshoe.merge()", function() {
 
  	it ("should merge objects correctly", function() {
  		var defaults = {
@@ -24,16 +24,34 @@ describe("Array Helpers", function() {
 });
 
 
-describe("Date/Time Helpers", function() {
+describe("Gumshoe.formatTimestamp()", function() {
 
- 	it ("should format timestamps to a proper ISOString", function() {
- 		// @TODO
+ 	it ("should format timestamps to a proper ISO Strings", function() {
+ 		
+ 		expect(Gumshoe.formatTimestamp(new Date('2001')))
+ 			.toBe((new Date(Date.UTC(2001, 0, 1, 0, 0, 0, 0))).toISOString());
+
+ 		expect(Gumshoe.formatTimestamp(new Date('2001-02')))
+ 			.toBe((new Date(Date.UTC(2001, 1, 1, 0, 0, 0, 0))).toISOString());
+
+ 		expect(Gumshoe.formatTimestamp(new Date('2001-02-03')))
+ 			.toBe((new Date(Date.UTC(2001, 1, 3, 0, 0, 0, 0))).toISOString());
+
+ 		expect(Gumshoe.formatTimestamp(new Date('2001-02-03T11:32:02.250Z')))
+ 			.toBe((new Date(Date.UTC(2001, 1, 3, 11, 32, 2, 250))).toISOString());
+
+ 		expect(Gumshoe.formatTimestamp(new Date('2001-02-03T23:32:02.250Z')))
+ 			.toBe((new Date(Date.UTC(2001, 1, 3, 23, 32, 2, 250))).toISOString());
+
+ 		expect(Gumshoe.formatTimestamp(new Date('foobar')))
+ 			.toThrow();
+
 	});
 
 });
 
 
-describe("GUIDs", function() {
+describe("Gumshoe.generateUUID()", function() {
 
 	it ("should generate a proper UUID", function() {
 		expect(Gumshoe.generateUUID())
