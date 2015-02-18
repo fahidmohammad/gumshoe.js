@@ -19,7 +19,7 @@
   },
 
   "devDependencies": {
-    "jstest":        "~1.0.0",
-    "uglify-js":     "~2.4.0"
+    "phantom-jasmine": "*",
+    "uglify-js":       "~2.4.0"
   }
 }

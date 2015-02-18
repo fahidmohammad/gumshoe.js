@@ -11,7 +11,7 @@ source_files := src/gumshoe.js
 all: $(target)
 
 test: $(target)
-	phantomjs phantom.js
+	phantom-jasmine test/gumshoe-tests.js
 
 clean:
 	rm -rf build

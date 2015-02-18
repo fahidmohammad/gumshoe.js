@@ -20,8 +20,7 @@ There are several dependencies required for builds, all of which are contained i
 
 To run tests with Phantom.js, perform steps 1-2 above, and continue with the following:
 
-4. Install [Phantom.js](http://phantomjs.org/)
-5. Run `make test` in the project root directory
+1. Run `make test` in the project root directory
 
 
 # Usage
