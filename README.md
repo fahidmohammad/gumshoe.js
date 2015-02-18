@@ -8,6 +8,22 @@ A JavaScript tracking class for Hyatt.com analytics.
 This library requires JQuery to be available before it is loaded.
 
 
+# Building from Source
+
+A UNIX Makefile is included to provide ease-of-use for builds.  Available options are `make`, `make test`, and `make clean`.
+
+There are several dependencies required for builds, all of which are contained in an NPM package.json for ease-of-use.  A full build can be performed by following these steps:
+
+1. Install [Node.js and NPM](https://docs.npmjs.com/getting-started/installing-node)
+2. Install package dependencies by running `npm install` in the project root directory
+3. Run `make` in the project root directory
+
+To run tests with Phantom.js, perform steps 1-2 above, and continue with the following:
+
+4. Install [Phantom.js](http://phantomjs.org/)
+5. Run `make test` in the project root directory
+
+
 # Usage
 
 Include the Gumshoe.js file in the bottom of your page:
@@ -87,5 +103,5 @@ Gumshoe.debug = true;
 
 # Support
 
-This project is maintained by the Hyatt.com Rearchitecture Group.  Questions can be directed to
+This project is maintained by the Analytics Development Group.  Questions can be directed to
 [Andrew Vaughan](mailto:andrew.vaughan@hyatt.com)
