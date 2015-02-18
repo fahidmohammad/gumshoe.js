@@ -13,8 +13,9 @@ all: $(target)
 test: $(target)
 	phantomjs phantom.js
 
-clear:
+clean:
 	rm -rf build
 
 $(target): $(source_files)
-	uglifyjs -cmo $@ $^
+	mkdir -p build
+	uglifyjs --comments -cmo $@ $^

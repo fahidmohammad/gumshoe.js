@@ -1,4 +1,4 @@
-/*! Gumshoe v0.1.0 | (c) 2015 Hyatt Hotels Corporation | http://www.apache.org/licenses/LICENSE-2.0 */
+/*! Gumshoe v0.1.0 | (c) 2015 Hyatt Hotels Corporation | @license http://www.apache.org/licenses/LICENSE-2.0 */
 
 (function() {
 	
