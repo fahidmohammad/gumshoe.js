@@ -91,4 +91,52 @@ describe("UUID generation", function() {
 
 });
 
-//isDifferentOrigin
+
+describe("Different origin tests", function() {
+
+	var windowLocation = {
+		protocol: 'http:',
+		host: 'www.example.com'
+	};
+
+	it ("should determine same origin on relative values", function() {
+		var a = document.createElement('a');
+		a.href = '/test';
+
+		expect(Gumshoe.isDifferentOrigin(window.location, a))
+			.toBeFalsy();
+	});
+
+	it ("should determine same origin on absolute values", function() {
+		var a = document.createElement('a');
+		a.href = 'http://www.example.com/test';
+		
+		expect(Gumshoe.isDifferentOrigin(windowLocation, a))
+			.toBeFalsy();
+	});
+
+	it ("should determine different origin on different domains", function() {
+		var a = document.createElement('a');
+		a.href = 'http://www.test.com/';
+
+		expect(Gumshoe.isDifferentOrigin(windowLocation, a))
+			.toBeTruthy();
+	});
+
+	it ("should determine different origin on different subdomains", function() {
+		var a = document.createElement('a');
+		a.href = 'http://test.example.com/';
+
+		expect(Gumshoe.isDifferentOrigin(windowLocation, a))
+			.toBeTruthy();
+	});
+
+	it ("should determine different origin on different protocols", function() {
+		var a = document.createElement('a');
+		a.href = 'https://www.example.com/';
+
+		expect(Gumshoe.isDifferentOrigin(windowLocation, a))
+			.toBeTruthy();
+	});
+
+});
