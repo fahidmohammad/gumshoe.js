@@ -22,12 +22,12 @@
   <body>
 
   <script type="text/javascript">
-    var console_reporter = new jasmine.ConsoleReporter({
+    jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
+
+    jasmine.getEnv().addReporter(new jasmine.ConsoleReporter({
       showColors: true
     });
-
-    jasmine.getEnv().addReporter(new jasmine.HtmlReporter());
-    jasmine.getEnv().addReporter(console_reporter);
+    
     jasmine.getEnv().execute();
   </script>
 
